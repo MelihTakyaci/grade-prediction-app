@@ -48,5 +48,127 @@ body {
   }
 }
 
+/* Slide down animation for mobile menu */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 300px;
+  }
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Smooth cursor gradient pulse */
+@keyframes cursorPulse {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.25;
+    transform: scale(1.1);
+  }
+}
+
+/* Data node appearance animation */
+@keyframes dataNodeAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+/* Network connection pulse */
+@keyframes connectionPulse {
+  0%, 100% {
+    stroke-dashoffset: 0;
+    opacity: 0.2;
+  }
+  50% {
+    stroke-dashoffset: 8;
+    opacity: 0.5;
+  }
+}
+
+/* Touch ripple animation for mobile */
+@keyframes touchRipple {
+  0% {
+    transform: scale(0.3);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+/* Touch glow effect */
+@keyframes touchGlow {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Particle burst animation */
+@keyframes particleBurst {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-40px) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Mobile card entrance animation */
+@keyframes cardSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Bounce on tap for mobile */
+@keyframes tapBounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+}
+
 /* Material Symbols helper (ensures proper fallback alignment) */
 .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400; font-family: 'Material Symbols Outlined'; }

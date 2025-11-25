@@ -134,6 +134,9 @@ export default function Home() {
   const [studyHours, setStudyHours] = useState<number>(8);
   const [attempts, setAttempts] = useState<number>(1);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [dataNodes, setDataNodes] = useState<Array<{ x: number; y: number; id: number }>>([]);
+  const [touchRipples, setTouchRipples] = useState<Array<{ x: number; y: number; id: number }>>([]);
   
   // Load language preference from localStorage on mount
   useEffect(() => {
@@ -147,6 +150,72 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem('preferredLanguage', language);
   }, [language]);
+
+  // Mouse tracking effect
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+      
+      // Create data nodes that follow cursor with delay
+      if (Math.random() > 0.85) {
+        const newNode = {
+          x: e.clientX + (Math.random() - 0.5) * 100,
+          y: e.clientY + (Math.random() - 0.5) * 100,
+          id: Date.now() + Math.random()
+        };
+        setDataNodes(prev => [...prev.slice(-15), newNode]); // Keep last 15 nodes
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Touch tracking effect for mobile
+  useEffect(() => {
+    const handleTouchMove = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (touch) {
+        setMousePosition({ x: touch.clientX, y: touch.clientY });
+        
+        // Create touch particles
+        if (Math.random() > 0.7) {
+          const newNode = {
+            x: touch.clientX + (Math.random() - 0.5) * 80,
+            y: touch.clientY + (Math.random() - 0.5) * 80,
+            id: Date.now() + Math.random()
+          };
+          setDataNodes(prev => [...prev.slice(-20), newNode]);
+        }
+      }
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (touch) {
+        // Create ripple effect on touch
+        const ripple = {
+          x: touch.clientX,
+          y: touch.clientY,
+          id: Date.now() + Math.random()
+        };
+        setTouchRipples(prev => [...prev, ripple]);
+        
+        // Remove ripple after animation
+        setTimeout(() => {
+          setTouchRipples(prev => prev.filter(r => r.id !== ripple.id));
+        }, 1000);
+      }
+    };
+
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    
+    return () => {
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchstart', handleTouchStart);
+    };
+  }, []);
   
   const t = translations[language];
 
@@ -267,6 +336,128 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden">
+      {/* Mouse tracking gradient orb with multiple layers - Data Mining Theme */}
+      <div 
+        className="pointer-events-none fixed inset-0 z-50"
+        style={{
+          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(75, 67, 229, 0.15), transparent 40%)`
+        }}
+      />
+      <div 
+        className="pointer-events-none fixed inset-0 z-50 opacity-60"
+        style={{
+          background: `radial-gradient(400px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(99, 102, 241, 0.1), transparent 50%)`,
+          transition: 'opacity 0.3s ease'
+        }}
+      />
+      <div 
+        className="pointer-events-none fixed inset-0 z-50"
+        style={{
+          background: `radial-gradient(200px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(139, 92, 246, 0.08), transparent 60%)`,
+          animation: 'cursorPulse 2s ease-in-out infinite'
+        }}
+      />
+      
+      {/* Data Mining Particles - Floating Data Nodes */}
+      <div className="pointer-events-none fixed inset-0 z-50">
+        {dataNodes.map((node, idx) => (
+          <div
+            key={node.id}
+            className="absolute w-2 h-2 rounded-full bg-primary/40 animate-[fadeIn_0.5s_ease-out]"
+            style={{
+              left: `${node.x}px`,
+              top: `${node.y}px`,
+              boxShadow: '0 0 10px rgba(75, 67, 229, 0.6), 0 0 20px rgba(75, 67, 229, 0.3)',
+              animation: `fadeIn 0.5s ease-out, float ${2 + idx * 0.1}s ease-in-out infinite`,
+              opacity: Math.max(0.3, 1 - idx * 0.06)
+            }}
+          >
+            {/* Data connection lines to cursor */}
+            {idx > 0 && (
+              <svg
+                className="absolute top-0 left-0 overflow-visible"
+                style={{
+                  width: '1px',
+                  height: '1px'
+                }}
+              >
+                <line
+                  x1="0"
+                  y1="0"
+                  x2={mousePosition.x - node.x}
+                  y2={mousePosition.y - node.y}
+                  stroke="rgba(75, 67, 229, 0.2)"
+                  strokeWidth="1"
+                  strokeDasharray="4,4"
+                  style={{
+                    animation: 'cursorPulse 1.5s ease-in-out infinite'
+                  }}
+                />
+              </svg>
+            )}
+          </div>
+        ))}
+        
+        {/* Neural Network Node at Cursor */}
+        <div
+          className="absolute w-4 h-4 -ml-2 -mt-2 rounded-full border-2 border-primary/60 bg-primary/20"
+          style={{
+            left: `${mousePosition.x}px`,
+            top: `${mousePosition.y}px`,
+            boxShadow: '0 0 15px rgba(75, 67, 229, 0.8), 0 0 30px rgba(75, 67, 229, 0.4)',
+            animation: 'cursorPulse 1s ease-in-out infinite'
+          }}
+        >
+          <div className="absolute inset-0 rounded-full border border-primary/40 animate-ping"></div>
+        </div>
+
+        {/* Touch Ripple Effects for Mobile */}
+        {touchRipples.map((ripple) => (
+          <div
+            key={ripple.id}
+            className="absolute -ml-8 -mt-8"
+            style={{
+              left: `${ripple.x}px`,
+              top: `${ripple.y}px`,
+            }}
+          >
+            {/* Outer ripple */}
+            <div 
+              className="absolute inset-0 w-16 h-16 rounded-full border-2 border-primary/60"
+              style={{
+                animation: 'touchRipple 1s ease-out forwards'
+              }}
+            />
+            {/* Middle ripple */}
+            <div 
+              className="absolute inset-0 w-16 h-16 rounded-full border-2 border-blue-400/40"
+              style={{
+                animation: 'touchRipple 1s ease-out 0.1s forwards'
+              }}
+            />
+            {/* Inner glow */}
+            <div 
+              className="absolute inset-0 w-16 h-16 rounded-full bg-primary/20"
+              style={{
+                animation: 'touchGlow 0.6s ease-out forwards',
+                boxShadow: '0 0 20px rgba(75, 67, 229, 0.6)'
+              }}
+            />
+            {/* Data particles burst */}
+            {[...Array(8)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute top-1/2 left-1/2 w-1.5 h-1.5 rounded-full bg-primary/60"
+                style={{
+                  animation: `particleBurst 0.8s ease-out forwards`,
+                  animationDelay: `${i * 0.05}s`,
+                  transform: `rotate(${i * 45}deg) translateY(0)`,
+                }}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
       {/* Background Decoration */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
         <div className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-primary/20 rounded-full filter blur-3xl opacity-40"></div>
@@ -341,16 +532,16 @@ export default function Home() {
           <div className="md:hidden glassmorphism border-b border-white/10 py-4 px-6 space-y-3 animate-[slideDown_0.3s_ease-out] overflow-hidden">
             <button 
               onClick={scrollToModels}
-              className="w-full text-left text-white/80 hover:text-white transition-all duration-300 text-sm font-medium py-2 flex items-center gap-2 hover:gap-3 hover:pl-2"
+              className="w-full text-left text-white/80 hover:text-white transition-all duration-300 text-sm font-medium py-2 flex items-center gap-2 hover:gap-3 hover:pl-2 hover:scale-105 active:scale-95"
             >
-              <span className="material-symbols-outlined text-lg">analytics</span>
+              <span className="material-symbols-outlined text-lg animate-pulse">analytics</span>
               {t.models}
             </button>
             <button 
               onClick={scrollToPredict}
-              className="w-full text-left px-4 py-2 rounded-lg bg-primary/20 hover:bg-primary/30 text-white text-sm font-medium transition-all duration-300 border border-primary/50 flex items-center gap-2 hover:gap-3 hover:shadow-lg hover:shadow-primary/20"
+              className="w-full text-left px-4 py-2 rounded-lg bg-primary/20 hover:bg-primary/30 text-white text-sm font-medium transition-all duration-300 border border-primary/50 flex items-center gap-2 hover:gap-3 hover:shadow-lg hover:shadow-primary/20 hover:scale-105 active:scale-95"
             >
-              <span className="material-symbols-outlined text-lg">calculate</span>
+              <span className="material-symbols-outlined text-lg animate-pulse">calculate</span>
               {t.predict}
             </button>
             <p className="text-white/60 text-xs font-medium pt-2 border-t border-white/10 animate-[fadeIn_0.5s_ease-out]">{t.courseName}</p>
