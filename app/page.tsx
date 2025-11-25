@@ -124,7 +124,7 @@ const translations: Translations = {
     featureAttempts: "Tekrar",
     // Footer
     instructor: "Veri Madenciliğine Giriş - Efendi Nasiboğlu",
-    team: "Melih Takyacı 2023280154, Emre Özdemir 2023280140, Hasan Bertuğ Taş 2021280088, Mustafa Balcı 2022280042, Emir Mutlu 2022280050",
+    team: "Melih Takyaci 2023280154, Emre Özdemir 2023280140, Hasan Bertuğ Taş 2021280088, Mustafa Balcı 2022280042, Emir Mutlu 2022280050",
   },
 };
 
