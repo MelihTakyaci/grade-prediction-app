@@ -31,7 +31,7 @@ const translations: Translations = {
     predict: "Predict",
     // Hero
     heroTitle: "Predict Your Academic Success",
-    heroSubtitle: "Three AI models analyze your data to forecast final grades with precision.",
+    heroSubtitle: "Three AI models analyze your data to forecast final grades with precision for BIL-1011 Introduction to Computer Science I.",
     // Form
     formTitle: "Enter Your Information",
     formSubtitle: "Provide your details once — we'll run three different prediction models",
@@ -82,7 +82,7 @@ const translations: Translations = {
     predict: "Tahmin Et",
     // Hero
     heroTitle: "Akademik Başarınızı Tahmin Edin",
-    heroSubtitle: "Üç yapay zeka modeli verilerinizi analiz ederek final notunuzu hassas bir şekilde tahmin eder.",
+    heroSubtitle: "Üç yapay zeka modeli verilerinizi analiz ederek BIL-1011 Bilgisayar Bilimlerine Giriş I dersi için final notunuzu hassas bir şekilde tahmin eder.",
     // Form
     formTitle: "Bilgilerinizi Girin",
     formSubtitle: "Bilgilerinizi bir kez girin — üç farklı tahmin modeli çalıştıracağız",
