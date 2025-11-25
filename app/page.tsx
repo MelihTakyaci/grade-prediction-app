@@ -31,7 +31,7 @@ const translations: Translations = {
     predict: "Predict",
     // Hero
     heroTitle: "Predict Your Academic Success",
-    heroSubtitle: "Three AI models analyze your data to forecast final grades with precision for BIL-1011 Introduction to Computer Science I.",
+    heroSubtitle: "Three AI models analyze your data to forecast midterm grades with precision for BIL-1011 Introduction to Computer Science I.",
     // Form
     formTitle: "Enter Your Information",
     formSubtitle: "Provide your details once — we'll run three different prediction models",
@@ -57,7 +57,7 @@ const translations: Translations = {
     polynomialRegression: "Polynomial Regression",
     multipleRegression: "Multiple Regression",
     // Model explanations
-    linearExplanation: "Uses a linear relationship between weekly study hours and final grade to make predictions.",
+    linearExplanation: "Uses a linear relationship between weekly study hours and midterm grade to make predictions.",
     polyExplanation: "Applies polynomial curve fitting to capture non-linear patterns in how repeated attempts affect performance.",
     multipleExplanation: "Combines multiple variables (study hours, attempts, and class year) using linear relationships to provide a comprehensive prediction.",
     // How it works
@@ -82,7 +82,7 @@ const translations: Translations = {
     predict: "Tahmin Et",
     // Hero
     heroTitle: "Akademik Başarınızı Tahmin Edin",
-    heroSubtitle: "Üç yapay zeka modeli verilerinizi analiz ederek BIL-1011 Bilgisayar Bilimlerine Giriş I dersi için final notunuzu hassas bir şekilde tahmin eder.",
+    heroSubtitle: "Üç yapay zeka modeli verilerinizi analiz ederek BIL-1011 Bilgisayar Bilimlerine Giriş I dersi için vize notunuzu hassas bir şekilde tahmin eder.",
     // Form
     formTitle: "Bilgilerinizi Girin",
     formSubtitle: "Bilgilerinizi bir kez girin — üç farklı tahmin modeli çalıştıracağız",
@@ -108,7 +108,7 @@ const translations: Translations = {
     polynomialRegression: "Polinom Regresyon",
     multipleRegression: "Çoklu Regresyon",
     // Model explanations
-    linearExplanation: "Haftalık çalışma saatleri ile final notu arasında doğrusal bir ilişki kullanarak tahmin yapar.",
+    linearExplanation: "Haftalık çalışma saatleri ile vize notu arasında doğrusal bir ilişki kullanarak tahmin yapar.",
     polyExplanation: "Ders tekrar sayısının performansa etkisindeki doğrusal olmayan kalıpları yakalamak için polinom eğri uydurması uygular.",
     multipleExplanation: "Kapsamlı bir tahmin sağlamak için birden fazla değişkeni (çalışma saati, tekrar sayısı ve sınıf) doğrusal ilişkiler kullanarak birleştirir.",
     // How it works
