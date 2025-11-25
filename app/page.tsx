@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface ModelPrediction {
   name: string;
@@ -26,6 +26,7 @@ interface Translations {
 const translations: Translations = {
   en: {
     // Header
+    courseName: "BIL-1011 Introduction to Computer Science I",
     models: "Models",
     predict: "Predict",
     // Hero
@@ -71,10 +72,12 @@ const translations: Translations = {
     featureClassYear: "Class Year",
     featureAttempts: "Attempts",
     // Footer
-    footer: "© 2024 GradePredict. All rights reserved.",
+    instructor: "Data Mining Introduction - Efendi Nasiboğlu",
+    team: "Melih Takyaci 2023280154, Emre Özdemir 2023280140, Hasan Bertuğ Taş 2021280088, Mustafa Balcı 2022280042, Emir Mutlu 2022280050",
   },
   tr: {
     // Header
+    courseName: "BIL-1011 Bilgisayar Bilimlerine Giriş I",
     models: "Modeller",
     predict: "Tahmin Et",
     // Hero
@@ -120,7 +123,8 @@ const translations: Translations = {
     featureClassYear: "Sınıf",
     featureAttempts: "Tekrar",
     // Footer
-    footer: "© 2024 GradePredict. Tüm hakları saklıdır.",
+    instructor: "Veri Madenciliğine Giriş - Efendi Nasiboğlu",
+    team: "Melih Takyacı 2023280154, Emre Özdemir 2023280140, Hasan Bertuğ Taş 2021280088, Mustafa Balcı 2022280042, Emir Mutlu 2022280050",
   },
 };
 
@@ -129,6 +133,20 @@ export default function Home() {
   const [classYear, setClassYear] = useState<number>(1);
   const [studyHours, setStudyHours] = useState<number>(8);
   const [attempts, setAttempts] = useState<number>(1);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // Load language preference from localStorage on mount
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('preferredLanguage');
+    if (savedLanguage === 'en' || savedLanguage === 'tr') {
+      setLanguage(savedLanguage as Language);
+    }
+  }, []);
+
+  // Save language preference to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem('preferredLanguage', language);
+  }, [language]);
   
   const t = translations[language];
 
@@ -136,11 +154,13 @@ export default function Home() {
   const scrollToModels = () => {
     const modelsSection = document.getElementById('models-section');
     modelsSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setMobileMenuOpen(false);
   };
 
   const scrollToPredict = () => {
     const predictSection = document.getElementById('predict-section');
     predictSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setMobileMenuOpen(false);
   };
   
   const [predictions, setPredictions] = useState<ModelPrediction[]>([
@@ -260,8 +280,13 @@ export default function Home() {
             <div className="size-10 text-primary">
               <Image src="/logo.png" alt="GradePredict Logo" width={55} height={55} />
             </div>
-            <h2 className="text-white text-xl font-bold leading-tight tracking-[-0.015em]">GradePredict</h2>
+            <div className="flex flex-col">
+              <h2 className="text-white text-xl font-bold leading-tight tracking-[-0.015em]">GradePredict</h2>
+              <p className="text-white/60 text-xs font-medium hidden sm:block">{t.courseName}</p>
+            </div>
           </div>
+
+          {/* Desktop Navigation */}
           <div className="hidden md:flex flex-1 justify-end gap-8">
             <div className="flex items-center gap-4">
               <button 
@@ -288,7 +313,49 @@ export default function Home() {
               </button>
             </div>
           </div>
+
+          {/* Mobile Menu Button */}
+          <div className="flex md:hidden items-center gap-2">
+            {/* Mobile Language Toggle */}
+            <button
+              onClick={() => setLanguage(language === "en" ? "tr" : "en")}
+              className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors text-white text-xs font-medium"
+            >
+              <span className="material-symbols-outlined text-base">language</span>
+              <span>{language === "en" ? "TR" : "EN"}</span>
+            </button>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors text-white"
+              aria-label="Toggle menu"
+            >
+              <span className="material-symbols-outlined text-2xl">
+                {mobileMenuOpen ? "close" : "menu"}
+              </span>
+            </button>
+          </div>
         </header>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden glassmorphism border-b border-white/10 py-4 px-6 space-y-3 animate-[slideDown_0.3s_ease-out] overflow-hidden">
+            <button 
+              onClick={scrollToModels}
+              className="w-full text-left text-white/80 hover:text-white transition-all duration-300 text-sm font-medium py-2 flex items-center gap-2 hover:gap-3 hover:pl-2"
+            >
+              <span className="material-symbols-outlined text-lg">analytics</span>
+              {t.models}
+            </button>
+            <button 
+              onClick={scrollToPredict}
+              className="w-full text-left px-4 py-2 rounded-lg bg-primary/20 hover:bg-primary/30 text-white text-sm font-medium transition-all duration-300 border border-primary/50 flex items-center gap-2 hover:gap-3 hover:shadow-lg hover:shadow-primary/20"
+            >
+              <span className="material-symbols-outlined text-lg">calculate</span>
+              {t.predict}
+            </button>
+            <p className="text-white/60 text-xs font-medium pt-2 border-t border-white/10 animate-[fadeIn_0.5s_ease-out]">{t.courseName}</p>
+          </div>
+        )}
 
         <main className="flex flex-col items-center w-full max-w-6xl mx-auto py-12 md:py-20 space-y-16 md:space-y-24">
           {/* Hero Section */}
@@ -307,10 +374,10 @@ export default function Home() {
               <div className="w-full aspect-square @[864px]:w-2/5 flex items-center justify-center">
                 <div className="relative group">
                   {/* Animated glow background */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-blue-500 rounded-full blur-2xl opacity-50 group-hover:opacity-75 animate-pulse"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary via-blue400-500 to-blue-500 rounded-full blur-2xl opacity-50 group-hover:opacity-75 animate-pulse"></div>
                   
                   {/* Rotating border effect */}
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary via-purple-500 to-blue-500 animate-[spin_3s_linear_infinite] opacity-60"></div>
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary via-blue-400 to-blue-700 animate-[spin_3s_linear_infinite] opacity-60"></div>
                   
                   {/* Glass morphism container */}
                   <div className="relative glassmorphism rounded-full p-4 backdrop-blur-xl border-2 border-white/20 shadow-2xl transform transition-all duration-500 group-hover:scale-105 group-hover:rotate-3 animate-[float_6s_ease-in-out_infinite]">
@@ -325,7 +392,7 @@ export default function Home() {
                   
                   {/* Sparkle effects */}
                   <div className="absolute -top-4 -right-4 w-8 h-8 bg-primary/60 rounded-full blur-md animate-ping"></div>
-                  <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-purple-500/60 rounded-full blur-md animate-ping delay-75"></div>
+                  <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-blue-500/60 rounded-full blur-md animate-ping delay-75"></div>
                 </div>
               </div>
             </div>
@@ -494,8 +561,9 @@ export default function Home() {
         </main>
 
         {/* Footer */}
-        <footer className="w-full text-center py-8 border-t border-white/10 mt-12">
-          <p className="text-sm text-white/60">{t.footer}</p>
+        <footer className="w-full text-center py-8 border-t border-white/10 mt-12 space-y-3">
+          <p className="text-base font-semibold text-white/80">{t.instructor}</p>
+          <p className="text-xs text-white/50 max-w-3xl mx-auto">{t.team}</p>
         </footer>
       </div>
     </div>
